@@ -1,3 +1,6 @@
+################## Comments on utils.py ##################
+    # 1. There is a lot of repeated code in plot_loss_acc function. Can you make it more efficient?;
+
 import re
 import os
 import numpy as np
@@ -97,7 +100,7 @@ def plot_confusion_matrix(gts, pred, cls_names, log_dir, test_acc):
     
     '''
     
-    Gets GROUND TRUTS labels and PREDICTED labels, class names and log_dir - the DIRECTORY 
+    Gets GROUND TRUTHS labels and PREDICTED labels, class names and log_dir - the DIRECTORY 
     where model's best parameters and output data are saved, and plots CONFUSION MATRIX
 
     Arguments:
