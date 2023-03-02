@@ -1,3 +1,6 @@
+################## Comments on dataset.py ##################
+    1. Add reproducibility (random seed or save pickle file);
+
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
 import torch
