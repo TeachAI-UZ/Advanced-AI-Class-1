@@ -1,0 +1,12 @@
+# Assignment 1 explanation
+
+Completed all the subtasks of the Assignment #1
+
+I modelrately changed the all codes, so that I can be able to train, validate and run inference and get plots
+(learning curves) after train/validation and confusion matrix after inference.
+
+1.4 Conducted experiments with resnet50, xception, vit_tiny_224, vit_large_224
+
+1.7 Since batch_size =1 takes very long time, I tested resnet50 with bs=32/96/192
+
+1.8 Plotted the curves for the task 1.7.
