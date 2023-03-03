@@ -165,7 +165,7 @@ def train(model, tr_dl, val_dl, criterion, optimizer, epochs,
         # Save the best model
         if (val_accuracy / len(val_dl)) > max_val_acc:
             
-            # Remove the previous best model and save the current best model if code is rerun
+            # Remove the previous files and save the current best model if code is rerun
             if i == 0:
                 for file in os.listdir(log_dir):
                   os.remove(log_dir + '/' + file)
