@@ -1,4 +1,8 @@
-import torch, os
+   ##### -- Made some changes on on lines 168 ~ 172 to clean the old files if the code is rerun.   ####
+
+
+import torch
+import os
 from tqdm import tqdm
 import numpy as np
 from utils import plot_loss_acc
@@ -37,15 +41,15 @@ def train(model, tr_dl, val_dl, criterion, optimizer, epochs,
     
     Arguments:
     
-        model - a trained model;
-        tr_dl - train dataloader;
-        val_dl - validation dataloader;
-        criterion - loss function;
-        optimizer - optimizer type;
-        epochs - number of epoch to train the model;
-        device - device type;
+        model      - a trained model;
+        tr_dl      - train dataloader;
+        val_dl     - validation dataloader;
+        criterion  - loss function;
+        optimizer  - optimizer type;
+        epochs     - number of epoch to train the model;
+        device     - device type;
         batch size - amount of data dataloader gets
-        log_dir - model DIRECTORY to save the results
+        log_dir    - model DIRECTORY to save the results
     
     '''
 
@@ -63,7 +67,7 @@ def train(model, tr_dl, val_dl, criterion, optimizer, epochs,
     print('--------------------------------------------------------------')
 
     # Define your execution device
-    device_name=torch.cuda.get_device_name(device)
+    device_name = torch.cuda.get_device_name(device)
     print(f"The model will be running on {device_name} device\n")
 
     # Move the model to gpu
@@ -161,8 +165,11 @@ def train(model, tr_dl, val_dl, criterion, optimizer, epochs,
         # Save the best model
         if (val_accuracy / len(val_dl)) > max_val_acc:
             
-            # Remove previous best model and save current best model
+            # Remove the previous best model and save the current best model if code is rerun
             if i == 0:
+                for file in os.listdir(log_dir):
+                  os.remove(log_dir + '/' + file)
+        
                 torch.save(model.state_dict(), log_dir + '/' + "checkpoint_" + str(i) + "_best.pth")
             else:
                 os.remove(log_dir + '/'  + "checkpoint_" + str(bestEpoch) + "_best.pth")
