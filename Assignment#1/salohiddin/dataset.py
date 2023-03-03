@@ -2,15 +2,12 @@ from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
 import torch
 
-seed=0
+seed = 0
 torch.manual_seed(seed)
 torch.cuda.manual_seed(seed)
-#torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.
 torch.manual_seed(seed)
 torch.backends.cudnn.benchmark = False
 torch.backends.cudnn.deterministic = True
-
-
 
 def get_dl(root, batch_size, t):
     
