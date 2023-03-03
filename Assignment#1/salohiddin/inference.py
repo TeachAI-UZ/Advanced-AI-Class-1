@@ -1,7 +1,6 @@
-import torch, timm
+import torch, timm, re
 import os, numpy as np
 from  tqdm import tqdm
-import re
 from utils import plot_confusion_matrix
 
 def inference(model_name, num_classes, log_dir, device, dl, cls_names):
@@ -53,8 +52,9 @@ def inference(model_name, num_classes, log_dir, device, dl, cls_names):
         ims, lbls = batch
         
         # Get predictions
-        preds = model(ims.to(device))
-        images.extend(ims.to(device))
+        ims = ims.to(device)
+        preds = model(ims)
+        images.extend(ims)
         
         # Get classes with max values
         _, predicted = torch.max(preds.data, 1)
