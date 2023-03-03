@@ -22,13 +22,13 @@ def run(args):
     
     
     # Get train and validation transformations 
-    train_transformations, valid_transformations= get_transforms(train=True), get_transforms(train=False)
+    train_transformations, valid_transformations = get_transforms(train=True), get_transforms(train=False)
     
     # Get class names, number of classes, train and validation dataloaders
     cls_names, num_classes, tr_dl, val_dl, test_dl = get_dl(root, batch_size, valid_transformations)
-    # _,         _,           tr_dl,      _,        _ = get_dl(root, batch_size, train_transformations)
+    # _        ,        _,     tr_dl,      _,       _ = get_dl(root, batch_size, train_transformations)  #TRAIN transforms reapplied below
     
-    # Apply training transformations to ONLY TRAIN DATALOADER
+    # Reapply "TRAIN transformations" to ONLY TRAIN DATALOADER
     tr_dl.transform = train_transformations
 
 
@@ -37,18 +37,17 @@ def run(args):
     # Initialize model, loss_function, and optimizer    
     model = timm.create_model(model_name, pretrained=True, num_classes=num_classes)
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)  #torch.optim.Adam or Lion
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)  #torch.optim.Adam/AdamW or Lion
     
 
     # Create the model DIRECTORY if not available
     log_dir = create_model_dir(log_dir)
     
     # Train model
-    train(model, tr_dl, val_dl, criterion, optimizer, epochs, batch_size, lr, device, 
-          log_dir)   
+    train(model, tr_dl, val_dl, criterion, optimizer, epochs, batch_size, lr, device, log_dir)   
     
     # Test the model on unseen data
-    inference(model_name, num_classes, log_dir, device, test_dl, cls_names)
+    inference(model_name, num_classes, device, test_dl, cls_names)
    
     
     
