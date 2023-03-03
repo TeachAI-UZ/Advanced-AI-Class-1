@@ -10,11 +10,12 @@ def inference(model_name, num_classes, log_dir, device, dl, cls_names):
     performs inference and plots the confusion matrix on performance.
     
     Arguments:
-    model_name - model name for training;
+    model_name  - model name for training;
     num_classes - number of classes for the dataset;
-    log_dir - directory where model outputs are saved;
-    device - device type;
-    dl - dataloader.
+    log_dir     - directory where model outputs are saved;
+    device      - device type;
+    dl          - dataloader.
+    
     '''
     
     # Create lists for predictions, ground truths, and images
@@ -77,5 +78,3 @@ def inference(model_name, num_classes, log_dir, device, dl, cls_names):
     #return model, torch.stack(predictions), torch.stack(gts), torch.stack(images)
     
     plot_confusion_matrix(gts, predictions, cls_names, log_dir, test_acc)
-
-    
