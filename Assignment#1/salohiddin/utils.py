@@ -1,15 +1,15 @@
 ################## Comments on utils.py ##################
     # 1. There is a lot of repeated code in plot_loss_acc function. Can you make it more efficient?;
+     # -- Code is updated based on feedback.
 
-import re
 import os
+import glob
+import re
 import numpy as np
-import matplotlib.pyplot as plt
 import torch
 from sklearn.metrics import confusion_matrix 
+import matplotlib.pyplot as plt
 import seaborn as sns
-
-
 
 
 
@@ -17,7 +17,7 @@ def create_model_dir(log_dir):
 
     '''
     
-    Gets log_dir creates DIRECTORY (if not available) where model's best parameters and outputs are saved,
+    Gets log_dir, creates DIRECTORY (if not available) where model's best parameters and outputs are saved,
     and return log_dir itself
 
     Arguments:
@@ -42,27 +42,20 @@ def plot_loss_acc(log_dir):
        log_dir - model DIRECTORY
 
     '''
+    
+    os.chdir(log_dir)
+    dir_files = glob.glob('*.txt')
 
+    train_acc_file, train_loss_file = dir_files[0], dir_files[1]
+    val_acc_file, val_loss_file = dir_files[2], dir_files[3]
     
-    network_files = os.listdir(log_dir)
-    
-    train_acc_file = [string for string in network_files if 'train_accuracies' in string]
-    train_accs = np.loadtxt(log_dir + '/' + train_acc_file[0])
-    
-    validation_acc_file = [string for string in network_files if 'val_accuracies' in string]
-    validation_accs = np.loadtxt(log_dir + '/' + validation_acc_file[0])
-    
-    train_loss_file = [string for string in network_files if 'train_losses' in string]
-    train_losses = np.loadtxt(log_dir + '/' + train_loss_file[0])
-    
-    validation_loss_file = [string for string in network_files if 'val_losses' in string]
-    validation_losses = np.loadtxt(log_dir + '/' + validation_loss_file[0])
-    
-    bestEpoch = validation_acc_file[0].split('_')
-    bestEpoch = bestEpoch[-1]
-    bestEpoch = bestEpoch.split('.')
-    bestEpoch = bestEpoch[0]
-    bestEpoch = int(re.search(r'\d+', bestEpoch).group())
+    train_accs = np.loadtxt(train_acc_file)
+    train_losses = np.loadtxt(train_loss_file)
+    val_accs = np.loadtxt(val_acc_file)
+    val_losses = np.loadtxt(val_loss_file)
+
+    bestEpoch = re.findall('[0-9]+', train_acc_file)
+    bestEpoch=int(bestEpoch[-1])
     
     epochs = np.arange(train_losses.shape[0])
     
@@ -70,44 +63,43 @@ def plot_loss_acc(log_dir):
     plt.grid(which='both', axis='both')
 
     plt.plot(epochs, train_losses, label="Training loss", c='b')
-    plt.plot(epochs, validation_losses, label="Validation loss", c='r')
-    plt.plot(bestEpoch, validation_losses[bestEpoch], label="Best epoch", c='y', marker='.', markersize=10)
-    plt.text(bestEpoch+.01, validation_losses[bestEpoch]+.01, str(bestEpoch) + ' - ' + str(round(validation_losses[bestEpoch], 3)), fontsize=8)
+    plt.plot(epochs, val_losses, label="Validation loss", c='r')
+    plt.plot(bestEpoch, val_losses[bestEpoch], label="Best epoch", c='y', marker='.', markersize=10)
+    plt.text(bestEpoch+.01, val_losses[bestEpoch]+.01, str(bestEpoch) + ' - ' + str(round(val_losses[bestEpoch], 3)), fontsize=8)
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.title('Loss along epochs')
     plt.legend()
     plt.draw()
-    plt.savefig(log_dir + '/1_loss.png')
+    plt.savefig('./1_loss.png')
     
     plt.figure()
     plt.grid(which='both', axis='both')
     plt.plot(epochs, train_accs, label="Training accuracy", c='b')
-    plt.plot(epochs, validation_accs, label="Validation accuracy", c='r')
-    plt.plot(bestEpoch, validation_accs[bestEpoch], label="Best epoch", c='y', marker='.', markersize=10)
-    plt.text(bestEpoch+.001, validation_accs[bestEpoch]+.001, str(bestEpoch) + ' - ' + str(round(validation_accs[bestEpoch], 3)), fontsize=8)
+    plt.plot(epochs, val_accs, label="Validation accuracy", c='r')
+    plt.plot(bestEpoch, val_accs[bestEpoch], label="Best epoch", c='y', marker='.', markersize=10)
+    plt.text(bestEpoch+.001, val_accs[bestEpoch]+.001, str(bestEpoch) + ' - ' + str(round(val_accs[bestEpoch], 3)), fontsize=8)
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.title('Accuracy along epochs')
     plt.legend()
     plt.draw()
-    plt.savefig(log_dir + '/2_accuracy.png')
-    
-    # plt.show()
+    plt.savefig('./2_accuracy.png')
+    #plt.show()
 
 
-def plot_confusion_matrix(gts, pred, cls_names, log_dir, test_acc):
+def plot_confusion_matrix(gts, pred, cls_names, test_acc): # log_dir,
     
     '''
     
-    Gets GROUND TRUTHS labels and PREDICTED labels, class names and log_dir - the DIRECTORY 
+    Gets GROUND TRUTS labels and PREDICTED labels, class names and log_dir - the DIRECTORY 
     where model's best parameters and output data are saved, and plots CONFUSION MATRIX
 
     Arguments:
-       gts - GROUND TRUTS labels
-       pred - PREDICTED labels
+       gts       - GROUND TRUTS labels
+       pred      - PREDICTED labels
        cls_names - class names in the dataset
-       log_dir - model DIRECTORY
+       log_dir   - model DIRECTORY
 
     '''
 
@@ -136,5 +128,5 @@ def plot_confusion_matrix(gts, pred, cls_names, log_dir, test_acc):
     plt.yticks(rotation=0)
 
     # Save and show plot
-    plt.savefig(log_dir + '/3_cmatrix.png')
+    plt.savefig('./3_cmatrix.png')
    # plt.show()
