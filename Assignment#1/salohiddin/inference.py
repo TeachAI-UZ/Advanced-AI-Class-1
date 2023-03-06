@@ -1,13 +1,8 @@
 ### - Made sliight changes on lines 35 ~ 37 because of importing 'glob'.
 
-import torch
-import timm
-import re
-import glob
-#import os, numpy as np
+import torch, timm, re, glob
 from  tqdm import tqdm
 from utils import plot_confusion_matrix
-
 
 def inference(model_name, num_classes, device, dl, cls_names):
     
