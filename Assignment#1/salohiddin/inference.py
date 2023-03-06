@@ -1,5 +1,4 @@
-### - Made sliight changes on lines 35 ~ 37 because of importing 'glob'.
-
+### - Made slight changes on lines 35 ~ 37 because of importing 'glob'.
 import torch, timm, re, glob
 from  tqdm import tqdm
 from utils import plot_confusion_matrix
@@ -7,14 +6,15 @@ from utils import plot_confusion_matrix
 def inference(model_name, num_classes, device, dl, cls_names):
     
     '''
-    Gets a model name, number of classes for the dataset, model directory, device type, dataloader and class names;
+    
+    This function gets a model name, number of classes for the dataset, model directory, device type, dataloader and class names;
     performs inference and plots the confusion matrix on performance.
     
     Arguments:
-    model_name  - model name for training;
-    num_classes - number of classes for the dataset;
-    device      - device type;
-    dl          - dataloader.
+        model_name  - model name for training;
+        num_classes - number of classes for the dataset;
+        device      - device type;
+        dl          - dataloader.
     
     '''
     
@@ -33,7 +33,6 @@ def inference(model_name, num_classes, device, dl, cls_names):
     train_acc_file = dir_files[0]
     bestEpoch = re.findall('[0-9]+', train_acc_file)
     bestEpoch = int(bestEpoch[-1])
-
     model.load_state_dict(torch.load(f"./checkpoint_{bestEpoch}_best.pth"))
     print("Model checkpoint loaded successfully!")
     
@@ -68,8 +67,5 @@ def inference(model_name, num_classes, device, dl, cls_names):
         correct += (predicted == lbls.to(device)).sum().item()        
     test_acc = 100 * correct // total    
     print(f'Accuracy of the network on the {total} test images: {test_acc} %')  
-    
-    # Return model, predictions, ground truths, and images
-    #return model, torch.stack(predictions), torch.stack(gts), torch.stack(images)
     
     plot_confusion_matrix(gts, predictions, cls_names, test_acc)
