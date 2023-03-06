@@ -11,16 +11,15 @@ from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-
-
 def create_model_dir(log_dir):
 
     '''
     
-    Gets log_dir, creates DIRECTORY (if not available) where model's best parameters and outputs are saved,
+    This function gets log_dir, creates DIRECTORY (if not available) where model's best parameters and outputs are saved,
     and return log_dir itself
 
     Arguments:
+    
        log_dir - model DIRECTORY
 
     '''
@@ -29,20 +28,18 @@ def create_model_dir(log_dir):
 
     return log_dir
 
-
-
 def plot_loss_acc(log_dir):
     
     '''
     
-    Gets log_dir - the DIRECTORY where model's best parameters and output data are saved,
+    This function gets log_dir - the DIRECTORY where model's best parameters and output data are saved,
     and plots LOSS and ACCURACY curves.
 
     Arguments:
+    
        log_dir - model DIRECTORY
 
     '''
-    
     os.chdir(log_dir)
     dir_files = glob.glob('*.txt')
 
@@ -85,25 +82,23 @@ def plot_loss_acc(log_dir):
     plt.legend()
     plt.draw()
     plt.savefig('./2_accuracy.png')
-    #plt.show()
-
 
 def plot_confusion_matrix(gts, pred, cls_names, test_acc): # log_dir,
     
     '''
     
-    Gets GROUND TRUTS labels and PREDICTED labels, class names and log_dir - the DIRECTORY 
+    This function gets GROUND TRUTHS labels and PREDICTED labels, class names and log_dir - the DIRECTORY 
     where model's best parameters and output data are saved, and plots CONFUSION MATRIX
 
     Arguments:
-       gts       - GROUND TRUTS labels
-       pred      - PREDICTED labels
-       cls_names - class names in the dataset
-       log_dir   - model DIRECTORY
+    
+           gts       - GROUND TRUTS labels
+           pred      - PREDICTED labels
+           cls_names - class names in the dataset
+           log_dir   - model DIRECTORY
 
     '''
 
-    #y_true, y_pred = gts.cpu(), pred.cpu()   ??
     y_true = torch.tensor(gts).detach().cpu().numpy()
     y_pred = torch.tensor(pred).detach().cpu().numpy()
 
@@ -114,9 +109,7 @@ def plot_confusion_matrix(gts, pred, cls_names, test_acc): # log_dir,
 
     # Plot the Confusion Matrix (3 color types are available)
     plt.figure(figsize=(12,8))
-    #sns.heatmap(cm, annot=True, xticklabels=class_names, yticklabels=class_names)  #1st type
     sns.heatmap(cm, fmt='.2g', annot=True, cmap="crest", xticklabels=class_names, yticklabels=class_names) #2nd type
-    #sns.heatmap(cm, annot=True, xticklabels=class_names, yticklabels=class_names, cmap=sns.cubehelix_palette(as_cmap=True)) #3rd type
 
     # Add labels and title
     plt.title(f"Confusion Matrix: Test acc = {test_acc} %")
@@ -129,4 +122,3 @@ def plot_confusion_matrix(gts, pred, cls_names, test_acc): # log_dir,
 
     # Save and show plot
     plt.savefig('./3_cmatrix.png')
-   # plt.show()
