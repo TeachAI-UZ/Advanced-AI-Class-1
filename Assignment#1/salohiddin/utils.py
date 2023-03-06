@@ -2,11 +2,9 @@
     # 1. There is a lot of repeated code in plot_loss_acc function. Can you make it more efficient?;
      # -- Code is updated based on feedback.
 
-import os
-import glob
-import re
+# Import libraries
+import os, glob, re, torch
 import numpy as np
-import torch
 from sklearn.metrics import confusion_matrix 
 import matplotlib.pyplot as plt
 import seaborn as sns
