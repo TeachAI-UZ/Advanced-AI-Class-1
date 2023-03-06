@@ -6,7 +6,6 @@ from lion_pytorch import Lion
 from inference import inference
 from utils import create_model_dir
 
-
 def run(args):
     
     # Get train arguments    
@@ -20,18 +19,14 @@ def run(args):
     argstr = yaml.dump(args.__dict__, default_flow_style=False)
     print(f"\nTraining Arguments:\n{argstr}")
     
-    
     # Get train and validation transformations 
     train_transformations, valid_transformations = get_transforms(train=True), get_transforms(train=False)
     
     # Get class names, number of classes, train and validation dataloaders
     cls_names, num_classes, tr_dl, val_dl, test_dl = get_dl(root, batch_size, valid_transformations)
-    # _        ,        _,     tr_dl,      _,       _ = get_dl(root, batch_size, train_transformations)  #TRAIN transforms reapplied below
     
     # Reapply "TRAIN transformations" to ONLY TRAIN DATALOADER
     tr_dl.transform = train_transformations
-
-
     print(f"Number of classes in the dataset: {num_classes}\n")
     
     # Initialize model, loss_function, and optimizer    
@@ -39,7 +34,6 @@ def run(args):
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)  #torch.optim.Adam/AdamW or Lion
     
-
     # Create the model DIRECTORY if not available
     log_dir = create_model_dir(log_dir)
     
@@ -49,8 +43,6 @@ def run(args):
     # Test the model on unseen data
     inference(model_name, num_classes, device, test_dl, cls_names)
    
-    
-    
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description = 'Image Classification Training Arguments')
@@ -64,7 +56,6 @@ if __name__ == "__main__":
     args = parser.parse_args() 
     
     run(args) 
-
 
 # How to run the code and train and test any model you specify? >>>
 # Copy and paste the following in the terminal without "#"
