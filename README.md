@@ -3,8 +3,17 @@
 
 ### Contents
 1. **Image Classification**
-  - Extract dataset;
-  - Apply transformations;
+  - Extract dataset
+    - Get images
+    - Apply transformations;
+  - Train data:
+    - Dataset;
+    - Dataloader.
   - Train Loop:
-    - train and validations steps;
-  - Inference.
+    - Train and validation steps
+    - Model checkpoint save;
+  - Inference:
+    - Model checkpoint load;
+    - Model prediction.
+  - Model performance analysis:
+    - GradCAM.
