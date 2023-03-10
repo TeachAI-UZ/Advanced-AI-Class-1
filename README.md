@@ -17,4 +17,5 @@ This repository contains coding implementations of the theoritical knowledge lea
     - Model checkpoint load;
     - Model prediction.
   - *Model performance analysis:*
-    - GradCAM.
+    - Feature extractor layers;
+    - Heatmap visualization.
